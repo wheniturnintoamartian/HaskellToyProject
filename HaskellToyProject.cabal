@@ -1,0 +1,46 @@
+name:                HaskellToyProject
+version:             1
+homepage:            https://github.com/wheniturnintoamartian/HaskellToyProject#readme
+author:              Stefanos Papadogiannis
+copyright:           2017 Stefanos Papadogiannis
+category:            Web
+build-type:          Simple
+extra-source-files:  README.md
+cabal-version:       >=1.10
+
+library
+  hs-source-dirs:      src
+  exposed-modules:     Lib
+                     , SimpleJSON
+                     , SplitLines
+                     , PutJSON
+                     , PrettyJSON
+                     , Prettify
+  build-depends:       base >= 4.7 && < 5
+                     , HDBC-mysql >= 0.7.1.0
+                     , HDBC >= 2.4.0.2
+  default-language:    Haskell2010
+
+executable HaskellToyProject-exe
+  hs-source-dirs:      app
+  main-is:             Main.hs
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+                       -fwarn-incomplete-patterns
+  build-depends:       base
+                     , HaskellToyProject
+                     , HDBC-mysql
+                     , HDBC
+  default-language:    Haskell2010
+
+test-suite HaskellToyProject-test
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             Spec.hs
+  build-depends:       base
+                     , HaskellToyProject
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  default-language:    Haskell2010
+
+source-repository head
+  type:     git
+  location: https://github.com/wheniturnintoamartian/HaskellToyProject
