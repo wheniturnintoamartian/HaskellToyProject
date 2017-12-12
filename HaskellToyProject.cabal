@@ -16,6 +16,7 @@ library
                      , PutJSON
                      , PrettyJSON
                      , Prettify
+                     , JSONClass
   build-depends:       base >= 4.7 && < 5
                      , HDBC-mysql >= 0.7.1.0
                      , HDBC >= 2.4.0.2
