@@ -2,7 +2,7 @@
 
 module JSONClass where
 
-import SimpleJSON
+--import SimpleJSON
 
 type JSONError = String
 
@@ -44,8 +44,8 @@ newtype JAry a = JAry {
     fromJAry :: [a]
 } deriving (Eq, Ord, Show)
 
-jary :: [a] -> JAry
-jary = JAry
+--jary :: [a] -> JAry
+--jary = JAry
 
 newtype JObj a = JObj {
     fromJObj :: [(String, a)]

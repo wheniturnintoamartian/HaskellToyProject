@@ -2,7 +2,7 @@ module TempFile where
 
 import System.IO
 import System.Directory (getTemporaryDirectory, removeFile)
-import Control.Exception (catch, finally)
+import Control.Exception (catch, finally, IOException)
 
 -- The main entry point. Work with a temp file in myAction.
 someFunc :: IO ()
@@ -49,10 +49,11 @@ withTempFile :: String -> (FilePath -> Handle -> IO a) -> IO a
 withTempFile pattern function =
     do -- The library ref says that getTemporaryDirectory may raise on exception on systems that have no notion of a temporary directory. So, we run getTemporaryDirectory under catch. catch takes two functions:
        -- one to run, and a different one to run if the first raised an exception. If getTemporaryDirector raised an exception, just use "." (the current working directory).
-       tempDirectory <- catch (getTemporaryDirectory) (\_ -> return ".")
+       tempDirectory <- catch (getTemporaryDirectory) (\e -> do let _ = e :: IOException  -- or whatever exception type you want to catch
+                                                                return ".")
        (tempFile, tempHandle) <- openTempFile tempDirectory pattern
 
        -- Call (func tempFile tempHandle) to perform the action on the temporary file. finally takes two actions. The first is the action to run. The second is an action to run after the firs, regardless of
        -- the temporary file is always deleted. The return value from finally is the first action's return value.
-        finally (function tempFile tempHandle) (do hClose tempHandle; removeFile tempFile)
+       finally (function tempFile tempHandle) (do hClose tempHandle; removeFile tempFile)
 

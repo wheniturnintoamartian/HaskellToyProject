@@ -18,10 +18,12 @@ library
                      , Prettify
                      , JSONClass
                      , TempFile
+                     , ContravariantFunctor
   build-depends:       base >= 4.7 && < 5
                      , HDBC-mysql >= 0.7.1.0
                      , HDBC >= 2.4.0.2
                      , directory >= 1.3.0.0
+                     , contravariant >= 1.4
   default-language:    Haskell2010
 
 executable HaskellToyProject-exe
