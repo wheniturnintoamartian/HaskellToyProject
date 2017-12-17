@@ -13,6 +13,7 @@ import ElfMagic
 import HighestClose
 
 import Data.Char (toUpper)
+import Text.Regex.Posix
 
 main :: IO ()
-main = highestClose2
+main = print $ (("my left foot" =~ "foo")::Bool)

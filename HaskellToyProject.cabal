@@ -41,6 +41,7 @@ executable HaskellToyProject-exe
                      , HaskellToyProject
                      , HDBC-mysql
                      , HDBC
+                     , regex-posix
   default-language:    Haskell2010
 
 test-suite HaskellToyProject-test
