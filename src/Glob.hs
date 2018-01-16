@@ -15,20 +15,20 @@ namesMatching pat
         return (if exists then [pat] else [])
     | otherwise = do
         case splitFileName pat of
-        ("", baseName) -> do
-        curDir <- getCurrentDirectory
-        listMatches curDir baseName
-        (dirName, baseName) -> do
-        dirs <- if isPattern dirName
-        then namesMatching (dropTrailingPathSeparator dirName)
-        else return [dirName]
-        let listDir = if isPattern baseName
-        then listMatches
-        else listPlain
-        pathNames <- forM dirs $ \dir -> do
-        baseNames <- listDir dir baseName
-        return (map (dir </>) baseNames)
-        return (concat pathNames)
+            ("", baseName) -> do
+                curDir <- getCurrentDirectory
+                listMatches curDir baseName
+            (dirName, baseName) -> do
+                dirs <- if isPattern dirName
+                        then namesMatching (dropTrailingPathSeparator dirName)
+                        else return [dirName]
+                let listDir = if isPattern baseName
+                              then listMatches
+                              else listPlain
+                pathNames <- forM dirs $ \dir -> do
+                                baseNames <- listDir dir baseName
+                                return (map (dir </>) baseNames)
+                return (concat pathNames)
 
 doesNameExist :: FilePath -> IO Bool
 doesNameExist name = do
