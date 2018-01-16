@@ -22,7 +22,8 @@ library
                      , ToUpperLazy
                      , ToUpperLazy2      
                      , ElfMagic         
-                     , HighestClose      
+                     , HighestClose 
+                     , GlobRegex     
   build-depends:       base >= 4.7 && < 5
                      , HDBC-mysql >= 0.7.1.0
                      , HDBC >= 2.4.0.2
