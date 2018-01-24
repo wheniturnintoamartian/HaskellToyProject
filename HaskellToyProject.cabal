@@ -27,12 +27,14 @@ library
                      , Useful
                      , RecursiveContents
                      , SimpleFinder
+                     , BetterPredicate
   build-depends:       base >= 4.7 && < 5
                      , directory >= 1.3.0.0
                      , contravariant >= 1.4
                      , bytestring >= 0.10.8.1
                      , regex-posix >= 0.95.2
                      , filepath >= 1.4.1.1
+                     , old-time >= 1.1.0.3
   default-language:    Haskell2010
 
 executable HaskellToyProject-exe
@@ -44,6 +46,7 @@ executable HaskellToyProject-exe
                      , HaskellToyProject
                      , regex-posix
                      , filepath
+                     , old-time
   default-language:    Haskell2010
 
 test-suite HaskellToyProject-test
