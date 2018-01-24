@@ -10,8 +10,7 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Lib
-                     , SimpleJSON
+  exposed-modules:     SimpleJSON
                      , SplitLines
                      , PutJSON
                      , PrettyJSON
@@ -25,9 +24,8 @@ library
                      , HighestClose 
                      , GlobRegex   
                      , Glob  
+                     , Useful
   build-depends:       base >= 4.7 && < 5
-                     , HDBC-mysql >= 0.7.1.0
-                     , HDBC >= 2.4.0.2
                      , directory >= 1.3.0.0
                      , contravariant >= 1.4
                      , bytestring >= 0.10.8.1
@@ -42,8 +40,6 @@ executable HaskellToyProject-exe
                        -fwarn-incomplete-patterns
   build-depends:       base
                      , HaskellToyProject
-                     , HDBC-mysql
-                     , HDBC
                      , regex-posix
   default-language:    Haskell2010
 

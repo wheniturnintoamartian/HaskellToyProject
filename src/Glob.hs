@@ -1,8 +1,10 @@
+{-# LANGUAGE ScopedTypeVariables #-}
+
 module Glob (namesMatching) where
 
 import System.Directory (doesDirectoryExist, doesFileExist, getCurrentDirectory, getDirectoryContents)
 import System.FilePath (dropTrailingPathSeparator, splitFileName, (</>))
-import Control.Exception (handle)
+import Control.Exception (handle, Exception, IOException)
 import Control.Monad (forM)
 import GlobRegex (matchesGlob)
 
@@ -42,7 +44,7 @@ listMatches dirName pat = do
     dirName' <- if null dirName
                 then getCurrentDirectory
                 else return dirName
-    handle (const (return [])) $ do
+    handle (\(err :: IOException)  -> return []) $ do
         names <- getDirectoryContents dirName'
         let names' = if isHidden pat
                      then filter isHidden names
