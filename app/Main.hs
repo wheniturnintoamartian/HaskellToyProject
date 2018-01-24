@@ -17,7 +17,11 @@ import RecursiveContents
 import Data.Char (toUpper)
 import Text.Regex.Posix
 import GlobRegex
+import SimpleFinder
+import System.FilePath(takeExtension)
 
 main :: IO ()
-main = do a <- getRecursiveContents "."
+main = do a <- simpleFind (\p -> takeExtension p == ".cpp") "."
           mapM_ print $ a
+          b <- getRecursiveContents "."
+          mapM_ print $ b
