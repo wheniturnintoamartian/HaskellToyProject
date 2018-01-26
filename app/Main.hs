@@ -19,9 +19,8 @@ import Text.Regex.Posix
 import GlobRegex
 import SimpleFinder
 import System.FilePath(takeExtension)
+import BetterPredicate
 
 main :: IO ()
-main = do a <- simpleFind (\p -> takeExtension p == ".cpp") "."
-          mapM_ print $ a
-          b <- getRecursiveContents "."
-          mapM_ print $ b
+main = do a <- betterFind (sizeP `equalP` 521) "."
+          print a

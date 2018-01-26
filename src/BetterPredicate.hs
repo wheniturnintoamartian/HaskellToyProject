@@ -2,11 +2,13 @@
 
 module BetterPredicate (
       betterFind
+    , equalP
+    , sizeP
     ) where
 
 import Control.Monad (filterM)
 import System.Directory (Permissions(..), getModificationTime, getPermissions)
-import System.Time (ClockTime(..))
+import Data.Time.Clock (UTCTime(..))
 import System.FilePath (takeExtension)
 import Control.Exception (bracket, handle, Exception, IOException)
 import System.IO (IOMode(..), hClose, hFileSize, openFile)
@@ -14,7 +16,7 @@ import System.IO (IOMode(..), hClose, hFileSize, openFile)
 -- the function we wrote earlier
 import RecursiveContents (getRecursiveContents)
 
-type Predicate = FilePath -> Permissions -> Maybe Integer -> ClockTime -> Bool
+type Predicate = FilePath -> Permissions -> Maybe Integer -> UTCTime -> Bool
 
 getFileSize :: FilePath -> IO (Maybe Integer)
 getFileSize path = handle (\(_ :: IOException) -> return Nothing) $
@@ -44,3 +46,17 @@ saferFileSize path = handle (\(_ :: IOException) -> return Nothing) $ do
     hClose h
     return (Just size)
 
+type InfoP a = FilePath -> Permissions -> Maybe Integer -> UTCTime -> a
+
+pathP :: InfoP FilePath
+pathP path _ _ _ = path
+
+sizeP :: InfoP Integer
+sizeP _ _ (Just size) _ = size
+sizeP _ _ Nothing     _ = -1
+
+equalP :: (Eq a) => InfoP a -> a -> InfoP Bool
+equalP f k = \w x y z -> f w x y z == k
+
+equalP' :: (Eq a) => InfoP a -> a -> InfoP Bool
+equalP' f k w x y z = f w x y z == k
