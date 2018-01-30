@@ -86,3 +86,13 @@ liftPath :: (FilePath -> a) -> InfoP a
 liftPath f w _ _ _ = f w
 
 myTest2 = (liftPath takeExtension `equalP` ".cpp") `andP` (sizeP `greaterP` 2)
+
+(==?) = equalP
+(&&?) = andP
+(>?) = greaterP
+myTest3 = (liftPath takeExtension ==? ".cpp") &&? (sizeP >? 131072)
+
+infix 4 ==?
+infixr 3 &&?
+infix 4 >?
+myTest4 = liftPath takeExtension ==? ".cpp" &&? sizeP >? 131072
