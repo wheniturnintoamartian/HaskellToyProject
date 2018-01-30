@@ -44,3 +44,8 @@ atMostThreePictures paths info
             = Continue paths
     where extension = map toLower (takeExtension path)
           path = infoPath info
+
+countDirectories count info =
+    Continue (if isDirectory info
+                 then count + 1
+                 else count)
