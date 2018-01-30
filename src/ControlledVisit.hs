@@ -42,3 +42,19 @@ isDirectory = maybe False searchable . infoPerms
 
 maybeIO :: IO a -> IO (Maybe a)
 maybeIO act = handle (\(_ :: IOException) -> return Nothing) (Just `liftM` act)
+
+traverseVerbose :: ([Info] -> [Info]) -> FilePath -> IO [Info]
+traverseVerbose order path = do
+    names <- getDirectoryContents path
+    let usefulNames = filter (`notElem` [".", ".."]) names
+    contents <- mapM getEntryName ("" : usefulNames)
+    recursiveContents <- mapM recurse (order contents)
+    return (concat recursiveContents)
+  where getEntryName name = getInfo (path </> name)
+        isDirectory info = case infoPerms info of
+                            Nothing -> False
+                            Just perms -> searchable perms
+        recurse info = do
+            if isDirectory info && infoPath info /= path
+                then traverseVerbose order (infoPath info)
+                else return [info]
