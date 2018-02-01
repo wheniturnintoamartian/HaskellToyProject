@@ -21,9 +21,9 @@ foldTree iter initSeed path = do
             let path' = path </> name
             info <- getInfo path'
             case iter seed info of
-                done@(Done _) -> return done
-                Skip seed' -> walk seed' names
-                Continue seed'
+                 done@(Done _) -> return done
+                 Skip seed' -> walk seed' names
+                 Continue seed'
                     | isDirectory info -> do
                         next <- fold seed' path'
                         case next of
@@ -45,6 +45,7 @@ atMostThreePictures paths info
     where extension = map toLower (takeExtension path)
           path = infoPath info
 
+countDirectories :: Iterator Int
 countDirectories count info =
     Continue (if isDirectory info
                  then count + 1
