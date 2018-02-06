@@ -41,24 +41,25 @@ fold iter seed subpath path = getUsefulContents subpath >>= walk iter seed path
 walk :: Iterator a -> a -> FilePath -> [String] -> IO (Iterate a)
 walk iter seed path (name:names) = do
             let path' = path </> name
+            putStrLn path'
             info <- getInfo path'
             case iter seed info of
                 done@(Done _) -> return done
-                Skip seed' -> walk iter seed' path names
+                Skip seed' -> walk iter seed' path' names
                 Continue seed'
                     | isDirectory info -> do
-                        next <- fold iter seed' path' path
+                        next <- fold iter seed' path' path'
                         case next of
                             done@(Done _) -> return done
-                            seed'' -> walk iter (unwrap seed'') path names
-                    | otherwise -> walk iter seed' path names
+                            seed'' -> walk iter (unwrap seed'') path' names
+                    | otherwise -> walk iter seed' path' names
 walk _ seed _ _ = return (Continue seed)
 
 atMostThreePictures :: Iterator [FilePath]
 atMostThreePictures paths info
         | length paths == 3
             = Done paths
-        | isDirectory info && takeFileName path == ".svn"
+        | isDirectory info && ((takeFileName path == ".svn") || (takeFileName path == ".git"))
             = Skip paths
         | extension `elem` [".jpg", ".png"]
             = Continue (path : paths)
