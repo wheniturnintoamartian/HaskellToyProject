@@ -63,6 +63,6 @@ parseP5 s =
 
 parseImage :: IO ()
 parseImage = do 
-    a <- L8.readFile "~/Desktop/HaskellToyProject/images/mandrill.pgm"
+    a <- L8.readFile "/home/stefanos/Desktop/HaskellToyProject/images/mandrill.pgm"
     case parseP5 a of
          Just (gm, bs) -> print gm
