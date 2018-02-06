@@ -19,6 +19,7 @@ foldTree iter initSeed path = do
         fold seed subpath = getUsefulContents subpath >>= walk seed
         walk seed (name:names) = do
             let path' = path </> name
+            putStrLn path'
             info <- getInfo path'
             case iter seed info of
                  done@(Done _) -> return done
@@ -45,15 +46,15 @@ walk iter seed path (name:names) = do
             info <- getInfo path'
             case iter seed info of
                 done@(Done _) -> return done
-                Skip seed' -> walk iter seed' path' names
+                Skip seed' -> walk iter seed' path names
                 Continue seed'
                     | isDirectory info -> do
                         next <- fold iter seed' path' path'
                         case next of
                             done@(Done _) -> return done
-                            seed'' -> walk iter (unwrap seed'') path' names
-                    | otherwise -> walk iter seed' path' names
-walk _ seed _ _ = return (Continue seed)
+                            seed'' -> walk iter (unwrap seed'') path names
+                    | otherwise -> walk iter seed' path names
+walk _ seed _ [] = return (Continue seed)
 
 atMostThreePictures :: Iterator [FilePath]
 atMostThreePictures paths info
