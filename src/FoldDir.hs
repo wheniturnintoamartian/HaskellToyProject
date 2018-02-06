@@ -3,6 +3,7 @@ module FoldDir where
 import ControlledVisit
 import System.FilePath ((</>), takeExtension, takeFileName)
 import Data.Char (toLower)
+import Data.List.Split
 
 data Iterate seed = Done { unwrap :: seed }
                   | Skip { unwrap :: seed }
@@ -60,7 +61,7 @@ atMostThreePictures :: Iterator [FilePath]
 atMostThreePictures paths info
         | length paths == 3
             = Done paths
-        | isDirectory info && ((takeFileName path == ".svn") || (takeFileName path == ".git"))
+        | isDirectory info && (lastDirectory == ".svn" || lastDirectory == ".git")
             = Skip paths
         | extension `elem` [".jpg", ".png"]
             = Continue (path : paths)
@@ -68,6 +69,7 @@ atMostThreePictures paths info
             = Continue paths
     where extension = map toLower (takeExtension path)
           path = infoPath info
+          lastDirectory = last $ splitOn "/" path
 
 countDirectories :: Iterator Int
 countDirectories count info =
