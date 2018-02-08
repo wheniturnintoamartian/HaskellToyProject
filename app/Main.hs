@@ -3,7 +3,6 @@ module Main where
 -- import Lib
 import SplitLines
 import SimpleJSON
-import PrettyJSON
 import Prettify
 import ContravariantFunctor
 import TempFile
@@ -20,7 +19,9 @@ import GlobRegex
 import SimpleFinder
 import System.FilePath(takeExtension)
 import BetterPredicate
+import Parse
+
+import qualified Data.ByteString.Lazy.Char8 as L8
 
 main :: IO ()
-main = do a <- betterFind (sizeP `equalP` 521) "."
-          print a
+main = print $ parse parseByte (L8.pack "8")

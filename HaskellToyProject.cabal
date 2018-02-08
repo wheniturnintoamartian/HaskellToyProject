@@ -31,6 +31,7 @@ library
                      , ControlledVisit
                      , FoldDir
                      , PNM
+                     , Parse
   build-depends:       base >= 4.7 && < 5
                      , directory >= 1.3.0.0
                      , contravariant >= 1.4
@@ -38,6 +39,8 @@ library
                      , regex-posix >= 0.95.2
                      , filepath >= 1.4.1.1
                      , time >= 1.6.0.1
+                     , word8 >= 0.1.3
+                     , split >= 0.2.3.2
   default-language:    Haskell2010
 
 executable HaskellToyProject-exe
@@ -49,6 +52,7 @@ executable HaskellToyProject-exe
                      , HaskellToyProject
                      , regex-posix
                      , filepath
+                     , bytestring
   default-language:    Haskell2010
 
 test-suite HaskellToyProject-test
