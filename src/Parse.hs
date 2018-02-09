@@ -133,3 +133,13 @@ parseBytes n = getState ==> \st ->
     in putState st' ==>& 
        assert (L.length h == n') "end of input" ==>&
        identity h
+
+parsePlainPGM :: Parse Greymap
+parsePlainPGM = 
+    parseWhileWith w2c notWhite ==> \header -> skipSpaces ==>&
+    assert (header == "P2") "invalid raw header" ==>&
+    parseNat ==> \width -> skipSpaces ==>&
+    parseNat ==> \height -> skipSpaces ==>&
+    parseNat ==> \maxGrey -> parseByte ==>&
+    parseBytes (width * height) ==> \bitmap -> identity (Greymap width height maxGrey bitmap)
+    where notWhite = (`notElem` " \r\t\n")
