@@ -2,18 +2,19 @@
 
 module QC where
 
-import Test.QuickCheck (oneof, Gen, elements, listOf, generate, verboseCheck, quickCheck)
+import Test.QuickCheck 
+-- (oneof, Gen, elements, listOf, generate, verboseCheck, quickCheck)
 import Control.Monad (liftM, liftM2)
 import Data.List (intersperse)
 
-class Arbitrary a where
-    arbitrary :: Gen a
+-- class Arbitrary a where
+    -- arbitrary :: Gen a
 
-instance Arbitrary Char where
-    arbitrary = elements (['A'..'Z'] ++ ['a'..'z'] ++ " ~!@#$%^&*()")
+-- instance Arbitrary Char where
+    -- arbitrary = elements (['A'..'Z'] ++ ['a'..'z'] ++ " ~!@#$%^&*()")
 
-instance Arbitrary String where
-    arbitrary = listOf (arbitrary :: Gen Char)
+-- instance Arbitrary String where
+    -- arbitrary = listOf (arbitrary :: Gen Char)
 
 -- instance Arbitrary Doc where
 --     arbitrary = do 
@@ -48,8 +49,8 @@ instance Arbitrary Doc where
                       , liftM2 Concat arbitrary arbitrary
                       , liftM2 Union arbitrary arbitrary ]
 
-instance Arbitrary [Doc] where
-    arbitrary = listOf (arbitrary :: Gen Doc)
+-- instance Arbitrary [Doc] where
+    -- arbitrary = listOf (arbitrary :: Gen Doc)
 
 empty :: Doc
 empty = Empty
@@ -106,9 +107,17 @@ punctuate p (d:ds) = (d <> p) : punctuate p ds
 prop_punctuate :: Doc -> [Doc] -> Bool
 prop_punctuate s xs = punctuate s xs == intersperse s xs
 
+prop_punctuate' :: Doc -> [Doc] -> Bool
 prop_punctuate' s xs = punctuate s xs == combine (intersperse s xs)
     where combine []           = []
           combine [x]          = [x]
           combine (x:Empty:ys) = x : combine ys
           combine (Empty:y:ys) = y : combine ys
           combine (x:y:ys)     = x `Concat` y : combine ys
+
+prop_mempty_id :: Doc -> Bool
+prop_mempty_id x = mempty `mappend` x == x && x `mappend` mempty == (x :: Doc)
+
+instance Monoid Doc where
+    mempty = empty
+    mappend = (<>)
